@@ -3,8 +3,8 @@
 import grpc
 import warnings
 
-import common_pb2 as common__pb2
-import data_processor_pb2 as data__processor__pb2
+from proto import common_pb2 as common__pb2
+from proto import data_processor_pb2 as data__processor__pb2
 
 GRPC_GENERATED_VERSION = '1.68.0'
 GRPC_VERSION = grpc.__version__
