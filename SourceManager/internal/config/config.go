@@ -10,7 +10,7 @@ import (
 type Config struct {
 	Env  string     `yaml:"env" env-default:"local"`
 	GRPC GRPCConfig `yaml:"grpc"`
-	HTML HTMLConfig `yaml:"http"`
+	HTTP HTTPConfig `yaml:"http"`
 }
 
 type GRPCConfig struct {
@@ -18,7 +18,7 @@ type GRPCConfig struct {
 	Timeout time.Duration `yaml:"timeout"`
 }
 
-type HTMLConfig struct {
+type HTTPConfig struct {
 	Port    int           `yaml:"port"`
 	Timeout time.Duration `yaml:"timeout"`
 }

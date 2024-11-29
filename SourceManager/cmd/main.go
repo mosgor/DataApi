@@ -2,35 +2,22 @@ package main
 
 import (
 	"SourceManager/internal/config"
-	"log/slog"
+	"SourceManager/internal/http_server"
+	logs "SourceManager/internal/logger"
 	_ "net"
-	"os"
 )
 
 func main() {
 	cfg := config.MustLoad()
 
-	log := setupLogger(cfg.Env)
+	log := logs.SetupLogger(cfg.Env)
 
 	log.Info("Logger is up")
-}
 
-func setupLogger(env string) *slog.Logger {
-	var log *slog.Logger
+	server := http_server.CreateServer()
 
-	switch env {
-	case "local":
-		log = slog.New(
-			slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
-		)
-	case "dev":
-		log = slog.New(
-			slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
-		)
-	case "prod":
-		log = slog.New(
-			slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
-		)
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Error(err.Error())
 	}
-	return log
 }
