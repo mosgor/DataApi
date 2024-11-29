@@ -1,0 +1,17 @@
+syntax = 'proto3';
+
+package DataProcessor;
+option go_package = '/pkg/internal/proto';
+
+import "google/protobuf/timestamp.proto";
+import "common.proto";
+
+service DataProcessor {
+  rpc ProcessData(stream Data) returns (common.Status) {}
+}
+
+message Data {
+  int32 source_id = 1;
+  string data_json = 2;
+  google.protobuf.Timestamp arrival_time = 3;
+}

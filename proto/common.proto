@@ -1,0 +1,8 @@
+syntax = 'proto3';
+
+package common;
+option go_package = '/pkg/internal/proto';
+
+message Status {
+  string message = 1;
+}

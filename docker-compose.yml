@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres_data_api
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adm
+      POSTGRES_DB: DataApi
+    ports:
+      - '5438:5432'
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo_data_api
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongo_data:/data/db
