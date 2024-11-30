@@ -3,6 +3,7 @@ import json
 from pymongo import MongoClient
 
 from mapping import *
+from transform import *
 
 def docker(df):
     client = MongoClient('mongodb://localhost:27017/DataApi')
@@ -18,4 +19,5 @@ def docker(df):
     data = pd.DataFrame([data])
 
     for document in documents:
-        mapping(data, document)
+        data = mapping(data, document['mapping'])
+        data = transform(data, document['transformation'])
