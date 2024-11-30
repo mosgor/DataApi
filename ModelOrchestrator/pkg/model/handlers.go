@@ -13,7 +13,7 @@ import (
 
 func NewFindAll(log *slog.Logger, repository repositories.ModelRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "client.handlers.NewFindAll"
+		const op = "model.handlers.NewFindAll"
 		log = log.With(
 			slog.String("op", op),
 			slog.String("request_id", middleware.GetReqID(r.Context())),
@@ -34,7 +34,7 @@ func NewFindAll(log *slog.Logger, repository repositories.ModelRepository) http.
 
 func NewFindOne(log *slog.Logger, repository repositories.ModelRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "food.handlers.NewFindOne"
+		const op = "model.handlers.NewFindOne"
 		log = log.With(
 			slog.String("op", op),
 			slog.String("request_id", middleware.GetReqID(r.Context())),
@@ -58,7 +58,7 @@ func NewFindOne(log *slog.Logger, repository repositories.ModelRepository) http.
 
 func NewCreate(log *slog.Logger, repository repositories.ModelRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "client.handlers.NewAdd"
+		const op = "model.handlers.NewAdd"
 		log = log.With(
 			slog.String("op", op),
 			slog.String("request_id", middleware.GetReqID(r.Context())),

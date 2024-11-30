@@ -36,6 +36,7 @@ func (r *repository) Create(ctx context.Context, model *structs.Resp) error {
 		return err
 	}
 	r.log.Info("Created new model in Postgres")
+	model.Id = model.ModelID
 	_, err := r.mongoClient.InsertOne(ctx, model.MongoModel)
 	if err != nil {
 		return fmt.Errorf("%w error while inserting in Mongo", err)

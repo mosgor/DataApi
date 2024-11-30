@@ -11,7 +11,7 @@ type MappingModel struct {
 
 type mapping struct {
 	SourcePath string `json:"source_path" bson:"source_path"`
-	ModelName  string `json:"model_name" bson:"model_name"`
+	ModelPath  string `json:"model_path" bson:"model_path"`
 }
 
 type transformation struct {
