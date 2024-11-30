@@ -11,8 +11,8 @@ class DataProcessor(data_processor_pb2_grpc.DataProcessorServicer):
         for req in request:
             data_dict = {
                 "source_id": req.source_id,
-                "data_json": [req.data_json],
-                "arrival_time": [req.arrival_time]
+                "data_json": req.data_json,
+                "arrival_time": req.arrival_time
             }
 
             docker(data_dict)

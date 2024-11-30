@@ -1,3 +1,5 @@
+import json
+
 from pymongo import MongoClient
 
 from mapping import *
@@ -12,5 +14,8 @@ def docker(df):
 
     documents = collection.find()
 
+    data = json.loads(df['data_json'].replace("'", '"'))
+    data = pd.DataFrame([data])
+
     for document in documents:
-        mapping(df, document)
+        mapping(data, document)
