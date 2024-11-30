@@ -10,9 +10,8 @@ type PostgresModel struct {
 }
 
 type MongoModel struct {
-	CreationDate time.Time `json:"creation_date,omitempty" bson:"creation_date"`
-	Fields       []field   `json:"fields" bson:"fields"`
-	SourceID     int       `json:"source_id,omitempty" bson:"source_id"`
+	Fields  []field `json:"fields" bson:"fields"`
+	ModelID int     `json:"model_id,omitempty" bson:"model_id"`
 }
 
 type field struct {
