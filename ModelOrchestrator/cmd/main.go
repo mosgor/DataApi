@@ -2,6 +2,7 @@ package main
 
 import (
 	"ModelOrchestrator/pkg/config"
+	"ModelOrchestrator/pkg/mapping"
 	"ModelOrchestrator/pkg/model"
 	"context"
 	"fmt"
@@ -42,6 +43,7 @@ func main() {
 	}
 
 	modelRepo := model.NewRepository(pool, client, log)
+	mappingRepo := mapping.NewRepository(client, log)
 
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
@@ -54,6 +56,10 @@ func main() {
 	router.Get("/model/{modelId}", model.NewFindOne(log, modelRepo))
 	router.Post("/model", model.NewCreate(log, modelRepo))
 
+	router.Get("/mapping", mapping.NewFindAll(log, mappingRepo))
+	router.Get("/mapping/{mappingId}", mapping.NewFindOne(log, mappingRepo))
+	router.Post("/mapping", mapping.NewCreate(log, mappingRepo))
+
 	srv := &http.Server{
 		Addr:         cfg.Http.Address,
 		ReadTimeout:  cfg.Http.Timeout,
@@ -62,7 +68,7 @@ func main() {
 		Handler:      router,
 	}
 
-	log.Info("Starting listening on ", srv.Addr)
+	log.Info("Starting listening on " + srv.Addr)
 	if err := srv.ListenAndServe(); err != nil {
 		log.Error("can't open server", err)
 	}
