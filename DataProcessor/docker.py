@@ -21,3 +21,4 @@ def docker(df):
     for document in documents:
         data = mapping(data, document['mapping'])
         data = transform(data, document['transformation'])
+        print(data)

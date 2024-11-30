@@ -1,21 +1,18 @@
-import ast
-import json
-import time
-import datetime
-
 import pandas as pd
 
+from datetime import datetime
+from dateutil import parser
+
 def yo(time_data):
-    formatted_str = time_data.replace("{", '{"').replace(":", '":').replace(", ", ', "').replace("}", '}')
-    time_data = ast.literal_eval(formatted_str)
+    birthdate = parser.parse(time_data)
+    current_date = datetime.now()
+    age = current_date.year - birthdate.year
 
-    seconds = time_data["seconds"]
-
-    date = datetime.datetime.utcfromtimestamp(seconds)
-    now = datetime.datetime.now()
-    year = now.year - date.year
-
-    return year
+    if (current_date.month, current_date.day) < (birthdate.month, birthdate.day):
+        age -= 1
+    if age < 0:
+        return
+    return age
 
 func = {
     "yo" : yo
