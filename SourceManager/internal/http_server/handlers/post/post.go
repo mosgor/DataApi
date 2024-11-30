@@ -2,29 +2,30 @@ package post
 
 import (
 	"SourceManager/internal/config"
+	"SourceManager/internal/db"
 	"SourceManager/internal/logger"
+	"SourceManager/internal/repositories"
 	"encoding/json"
-	"fmt"
+	"log/slog"
 	"net/http"
 )
 
-type Data struct{} // заменить на данные с дб
-
-var data []Data
-
-func ServerPost() http.HandlerFunc {
+func ServerPost(log *slog.Logger, repository repositories.SourceRepository) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var newData Data
 		cfg := config.MustLoad()
 		log := logger.SetupLogger(cfg.Env)
+		var newData db.Source
 		err := json.NewDecoder(r.Body).Decode(&newData)
 		if err != nil {
-			log.Error(err.Error())
+			log.Error("FROM http_server/handlers/post", err.Error(), err)
 			return
 		}
 
-		data = append(data, newData)
-		log.Info(fmt.Sprintf("New data read successfully:%v", newData))
-
+		repository.Create(r.Context(), &newData)
+		// err := json.NewDecoder(r.Body).Decode(&newData)
+		// if err != nil {
+		// 	log.Error(err.Error())
+		// 	return
+		// }
 	})
 }

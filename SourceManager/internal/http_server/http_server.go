@@ -58,7 +58,7 @@ func CreateServer() (server *http.Server) {
 	router.Delete("/source/{sourceID}", delete.ServerDelete())
 
 	router.Put("/source", put.ServerPut())
-	router.Post("/source", post.ServerPost())
+	router.Post("/source", post.ServerPost(log, repo))
 
 	return &http.Server{
 		Addr:         fmt.Sprintf(":%v", cfg.HTTP.Port),
