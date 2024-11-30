@@ -3,7 +3,6 @@ package model
 import (
 	"ModelOrchestrator/pkg/internal/repositories"
 	"ModelOrchestrator/pkg/internal/structs"
-	_ "ModelOrchestrator/pkg/internal/structs"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 	"log/slog"
@@ -29,7 +28,7 @@ func NewCreate(log *slog.Logger, repository repositories.ModelRepository) http.H
 			slog.String("op", op),
 			slog.String("request_id", middleware.GetReqID(r.Context())),
 		)
-		var req structs.Model
+		var req structs.Resp
 		err := render.DecodeJSON(r.Body, &req)
 		if err != nil {
 			log.Error("Failed to parse request body", err)
@@ -43,6 +42,6 @@ func NewCreate(log *slog.Logger, repository repositories.ModelRepository) http.H
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		//render.JSON(w, r, req)
+		render.JSON(w, r, req)
 	}
 }

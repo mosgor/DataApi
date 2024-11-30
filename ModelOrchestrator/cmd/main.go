@@ -8,6 +8,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log/slog"
 	"net/http"
 	"os"
@@ -31,7 +33,15 @@ func main() {
 		return
 	}
 
-	modelRepo := model.NewRepository(pool, log)
+	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+	opts := options.Client().ApplyURI("mongodb://localhost:27017").SetServerAPIOptions(serverAPI)
+	client, err := mongo.Connect(ctx, opts)
+	if err != nil {
+		log.Error("unable to connect to mongo")
+		return
+	}
+
+	modelRepo := model.NewRepository(pool, client, log)
 
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
@@ -42,6 +52,7 @@ func main() {
 
 	router.Get("/model", model.NewFindAll(log, modelRepo))
 	router.Get("/model/{modelId}", model.NewFindOne(log, modelRepo))
+	router.Post("/model", model.NewCreate(log, modelRepo))
 
 	srv := &http.Server{
 		Addr:         cfg.Http.Address,

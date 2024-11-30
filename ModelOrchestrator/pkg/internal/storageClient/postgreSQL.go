@@ -1,4 +1,4 @@
-package storageClients
+package storageClient
 
 import (
 	"context"
