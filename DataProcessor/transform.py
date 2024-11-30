@@ -1,5 +1,3 @@
-import pandas as pd
-
 from datetime import datetime
 from dateutil import parser
 

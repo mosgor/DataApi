@@ -1,7 +1,9 @@
 import json
 
+import pandas as pd
 from pymongo import MongoClient
 
+from client import run_client
 from mapping import *
 from transform import *
 from filter import *
@@ -12,9 +14,9 @@ def docker(df):
     collection = mapp['mappings']
     
     source_id = df['source_id']
-    find = {'source_id': source_id}
 
-    documents = collection.find()
+    query = {'source_id': str(source_id)}
+    documents = collection.find(query)
 
     data = json.loads(df['data_json'].replace("'", '"'))
     data = pd.DataFrame([data])
@@ -23,4 +25,6 @@ def docker(df):
         data = mapping(data, document['mapping'])
         data = transform(data, document['transformation'])
         data = filter(data, document['filters'])
-        print(data)
+        df['data_json'] = str(data)
+        print(df)
+        run_client(df, document['model_id'])
