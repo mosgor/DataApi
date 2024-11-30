@@ -20,4 +20,6 @@ func main() {
 	if err != nil {
 		log.Error(err.Error())
 	}
+
+	// TODO: дополнить запросы данными с дб
 }
