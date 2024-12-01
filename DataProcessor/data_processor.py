@@ -14,7 +14,6 @@ class DataProcessor(data_processor_pb2_grpc.DataProcessorServicer):
             }
 
             docker(data_dict)
-            data_list.append(data_dict)
 
         # df = pd.DataFrame(data_list)
         # print(df)

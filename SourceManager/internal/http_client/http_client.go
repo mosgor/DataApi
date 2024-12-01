@@ -4,7 +4,6 @@ import (
 	"SourceManager/internal/config"
 	"SourceManager/internal/logger"
 	"context"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -27,16 +26,17 @@ func UpdateData(cfg config.Config) [][]int32 {
 
 	coll := client.Database("DataApi").Collection("mappings")
 
-	cursor, err := coll.Aggregate(ctx, mongo.Pipeline{bson.D{
-		{Key: "$group", Value: bson.D{
-			{Key: "_id", Value: "$source_id"},
-		}}}})
+	pipeline := mongo.Pipeline{
+		{{"$group", bson.D{{"_id", "$source_id"}}}},
+	}
+	cursor, err := coll.Aggregate(ctx, pipeline)
+
+	indexes := make([][]int32, 0)
 
 	type OneIndex struct {
-		SourceId []int32 `bson:"source_id"`
+		SourceId []int32 `bson:"_id"`
 	}
 
-	var indexes [][]int32
 	var temp OneIndex
 
 	if err != nil {

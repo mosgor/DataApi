@@ -4,6 +4,6 @@ grpc:
   port: 50051
   timeout: 30m
 http:
-  port: 8082
+  port: 8081
   timeout: 30m
 

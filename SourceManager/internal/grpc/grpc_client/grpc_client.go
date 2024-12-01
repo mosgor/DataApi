@@ -2,7 +2,6 @@ package grpc_client
 
 import (
 	"SourceManager/internal/config"
-	"SourceManager/internal/http_client/handlers/get"
 	pb "SourceManager/internal/proto"
 	"SourceManager/internal/repositories"
 	"context"
@@ -19,7 +18,8 @@ func GrpcClientConnection(pb_client pb.DataProcessorClient, IDs [][]int32, ctx c
 		log.Error(err.Error())
 	}
 	for _, id := range IDs {
-		bsons += get.GetMultipleData(client, id, cfg, repo)
+		//bsons = get.GetMultipleData(client, id, cfg, repo)
+		bsons = `{'1':{'name': 'n','dt':[1, 2, 3, 4, 5],'aboba':{'string':'a','vas':'d','del':'killme'}},'2':{'name':'n','dt':[1,2,3,4,-5],'aboba':{'string':'a','vas':'d','del':'killme'}}}`
 		if err := stream.Send(&pb.Data{
 			SourceId:    id,
 			DataJson:    bsons,

@@ -1,6 +1,5 @@
 import json
 
-import pandas as pd
 from pymongo import MongoClient
 
 from client import run_client

@@ -3,18 +3,19 @@ package main
 import (
 	"SourceManager/internal/config"
 	"SourceManager/internal/db/sources"
+	"SourceManager/internal/grpc/grpc_client"
+	"SourceManager/internal/http_client"
 	"SourceManager/internal/http_server"
 	logs "SourceManager/internal/logger"
+	pb "SourceManager/internal/proto"
 	"context"
 	"fmt"
-
-	pb "SourceManager/internal/proto"
-
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"net/http"
 )
 
 func main() {
@@ -45,11 +46,6 @@ func main() {
 
 	server := http_server.CreateServer(repo)
 
-	er := server.ListenAndServe()
-	if er != nil {
-		log.Error(er.Error())
-	}
-
 	addr := fmt.Sprintf(":%d", cfg.GRPC.Port)
 
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -58,8 +54,15 @@ func main() {
 	}
 	defer conn.Close()
 
-	grpc_client := pb.NewDataProcessorClient(conn)
+	grpcClient := pb.NewDataProcessorClient(conn)
+	ids := http_client.UpdateData(*cfg)
+	httpClient := http.Client{
+		Timeout: cfg.HTTP.Timeout,
+	}
+	go grpc_client.GrpcClientConnection(grpcClient, ids, ctx, httpClient, log, *cfg, repo)
 
-	go grpc_client.ProcessData(ctx)
-
+	er := server.ListenAndServe()
+	if er != nil {
+		log.Error(er.Error())
+	}
 }
