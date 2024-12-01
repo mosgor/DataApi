@@ -1,0 +1,8 @@
+env: "prod"
+database_pass: "adm"
+http:
+  address: "localhost:8082"
+  timeout: 5m
+grpc:
+  address: "localhost:11411"
+  timeout: 5m

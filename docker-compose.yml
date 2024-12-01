@@ -2,7 +2,7 @@ version: '3.9'
 services:
 
   postgres:
-    image: postgres:latest
+    image: postgres:16
     container_name: postgres_data_api
     restart: always
     environment:
@@ -22,3 +22,32 @@ services:
       - '27017:27017'
     volumes:
       - ./mongo_data:/data/db
+
+  model_orchestrator:
+    build: ./ModelOrchestrator
+    container_name: mo_data_api
+    restart: always
+    ports:
+      - '8082:8082'
+      - '11411:11411'
+    depends_on:
+      - postgres
+      - mongo 
+
+  source_manager:
+    build: ./SourceManager
+    container_name: sm_data_api
+    restart: always
+    ports:
+      - '8081:8081'
+    depends_on:
+      - data_processor
+    
+  data_processor:
+    build: ./DataProcessor
+    container_name: dp_data_api
+    restart: always
+    ports:
+      - '50051:50051'
+    depends_on:
+      - model_orchestrator
