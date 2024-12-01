@@ -31,14 +31,14 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
-	pool, err := pgxpool.New(ctx, fmt.Sprintf("postgresql://admin:%v@localhost:5438/DataApi", cfg.DatabasePass))
+	pool, err := pgxpool.New(ctx, fmt.Sprintf("postgresql://admin:%v@postgres:5438/DataApi", cfg.DatabasePass))
 	if err != nil {
 		log.Error("unable to connect to postgres")
 		return
 	}
 
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI("mongodb://localhost:27017").SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI("mongodb://mongo:27017").SetServerAPIOptions(serverAPI)
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
 		log.Error("unable to connect to mongo")

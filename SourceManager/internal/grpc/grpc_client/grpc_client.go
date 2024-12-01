@@ -19,7 +19,7 @@ func GrpcClientConnection(pb_client pb.DataProcessorClient, IDs [][]int32, ctx c
 	}
 	for _, id := range IDs {
 		//bsons = get.GetMultipleData(client, id, cfg, repo)
-		bsons = `{'1':{'name': 'n','dt':[1, 2, 3, 4, 5],'aboba':{'string':'a','vas':'d','del':'killme'}},'2':{'name':'n','dt':[1,2,3,4,-5],'aboba':{'string':'a','vas':'d','del':'killme'}}}`
+		bsons = `{'1':{'name': 'n','dt':[1, 2, 3, 4, 5],'field':{'string':'a','vas':'d','del':'someData'}},'2':{'name':'n','dt':[1,2,3,4,-5],'field':{'string':'a','vas':'d','del':'someData'}}}`
 		if err := stream.Send(&pb.Data{
 			SourceId:    id,
 			DataJson:    bsons,

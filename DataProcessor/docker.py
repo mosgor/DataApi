@@ -8,7 +8,7 @@ from transform import *
 from filter import *
 
 def docker(df):
-    client = MongoClient('mongodb://localhost:27017/DataApi')
+    client = MongoClient('mongodb://mongo:27017/DataApi')
     mapp = client['DataApi']
     collection = mapp['mappings']
     

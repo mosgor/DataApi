@@ -27,14 +27,14 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), cfg.HTTP.Timeout)
 	defer cancel()
-	pool, err := pgxpool.New(ctx, fmt.Sprintf("postgresql://admin:%v@localhost:5438/DataApi", cfg.DatabasePass))
+	pool, err := pgxpool.New(ctx, fmt.Sprintf("postgresql://admin:%v@postgres:5438/DataApi", cfg.DatabasePass))
 	if err != nil {
 		log.Error("unable to connect to postgres")
 		return
 	}
 
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI("mongodb://localhost:27017").SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI("mongodb://mongo:27017").SetServerAPIOptions(serverAPI)
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
@@ -46,7 +46,7 @@ func main() {
 
 	server := http_server.CreateServer(repo)
 
-	addr := fmt.Sprintf(":%d", cfg.GRPC.Port)
+	addr := fmt.Sprintf("data_processor:%d", cfg.GRPC.Port)
 
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {

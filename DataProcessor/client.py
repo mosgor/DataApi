@@ -15,7 +15,7 @@ def client(df, model_id):
 
 
 def run_client(df, model_id):
-    with grpc.insecure_channel('localhost:11411') as channel:
+    with grpc.insecure_channel('model_orchestrator:11411') as channel:
         stub = model_orchestrator_pb2_grpc.ModelOrchestratorStub(channel)
 
         response = stub.SendData(client(df, model_id))
