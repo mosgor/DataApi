@@ -1,7 +1,7 @@
 env: "local"
 database_pass: "adm"
 grpc:
-  port: 40401
+  port: 50051
   timeout: 30m
 http:
   port: 8082

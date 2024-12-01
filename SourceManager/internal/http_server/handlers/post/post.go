@@ -22,10 +22,5 @@ func ServerPost(log *slog.Logger, repository repositories.SourceRepository) http
 		}
 
 		repository.Create(r.Context(), &newData)
-		// err := json.NewDecoder(r.Body).Decode(&newData)
-		// if err != nil {
-		// 	log.Error(err.Error())
-		// 	return
-		// }
 	})
 }
