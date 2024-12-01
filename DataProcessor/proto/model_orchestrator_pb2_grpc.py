@@ -4,7 +4,7 @@ import grpc
 import warnings
 
 from proto import common_pb2 as common__pb2
-from proto import data_processor_pb2 as data__processor__pb2
+from proto import model_orchestrator_pb2 as model__orchestrator__pb2
 
 GRPC_GENERATED_VERSION = '1.68.0'
 GRPC_VERSION = grpc.__version__
@@ -19,14 +19,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in data_processor_pb2_grpc.py depends on'
+        + f' but the generated code in model_orchestrator_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class DataProcessorStub(object):
+class ModelOrchestratorStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -35,43 +35,43 @@ class DataProcessorStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.ProcessData = channel.stream_unary(
-                '/DataProcessor.DataProcessor/ProcessData',
-                request_serializer=data__processor__pb2.Data.SerializeToString,
+        self.SendData = channel.stream_unary(
+                '/ModelOrchestrator.ModelOrchestrator/SendData',
+                request_serializer=model__orchestrator__pb2.ProcessedData.SerializeToString,
                 response_deserializer=common__pb2.Status.FromString,
                 _registered_method=True)
 
 
-class DataProcessorServicer(object):
+class ModelOrchestratorServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def ProcessData(self, request_iterator, context):
+    def SendData(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_DataProcessorServicer_to_server(servicer, server):
+def add_ModelOrchestratorServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ProcessData': grpc.stream_unary_rpc_method_handler(
-                    servicer.ProcessData,
-                    request_deserializer=data__processor__pb2.Data.FromString,
+            'SendData': grpc.stream_unary_rpc_method_handler(
+                    servicer.SendData,
+                    request_deserializer=model__orchestrator__pb2.ProcessedData.FromString,
                     response_serializer=common__pb2.Status.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'DataProcessor.DataProcessor', rpc_method_handlers)
+            'ModelOrchestrator.ModelOrchestrator', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('DataProcessor.DataProcessor', rpc_method_handlers)
+    server.add_registered_method_handlers('ModelOrchestrator.ModelOrchestrator', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class DataProcessor(object):
+class ModelOrchestrator(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def ProcessData(request_iterator,
+    def SendData(request_iterator,
             target,
             options=(),
             channel_credentials=None,
@@ -84,8 +84,8 @@ class DataProcessor(object):
         return grpc.experimental.stream_unary(
             request_iterator,
             target,
-            '/DataProcessor.DataProcessor/ProcessData',
-            data__processor__pb2.Data.SerializeToString,
+            '/ModelOrchestrator.ModelOrchestrator/SendData',
+            model__orchestrator__pb2.ProcessedData.SerializeToString,
             common__pb2.Status.FromString,
             options,
             channel_credentials,
