@@ -7,12 +7,14 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Data(_message.Message):
-    __slots__ = ("source_id", "data_json", "arrival_time")
+class ProcessedData(_message.Message):
+    __slots__ = ("source_id", "model_id", "data_json", "arrival_time")
     SOURCE_ID_FIELD_NUMBER: _ClassVar[int]
+    MODEL_ID_FIELD_NUMBER: _ClassVar[int]
     DATA_JSON_FIELD_NUMBER: _ClassVar[int]
     ARRIVAL_TIME_FIELD_NUMBER: _ClassVar[int]
     source_id: _containers.RepeatedScalarFieldContainer[int]
+    model_id: int
     data_json: str
     arrival_time: _timestamp_pb2.Timestamp
-    def __init__(self, source_id: _Optional[_Iterable[int]] = ..., data_json: _Optional[str] = ..., arrival_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, source_id: _Optional[_Iterable[int]] = ..., model_id: _Optional[int] = ..., data_json: _Optional[str] = ..., arrival_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
