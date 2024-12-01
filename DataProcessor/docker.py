@@ -23,7 +23,8 @@ def docker(df):
     for document in documents:
         data = mapping(data, document['mapping'])
         data = transform(data, document['transformation'])
-        #data = filter(data, document['filters'])
+        data = filter(data, document['filters'])
+        print(data)
         #df['data_json'] = str(data)
         #print(df)
         #run_client(df, document['model_id'])

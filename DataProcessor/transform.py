@@ -29,5 +29,4 @@ def transform(df, transformation):
         for p in path[1:-1]:
             data = data.get(p)
         data[path[-1]] = func[trans['func']](data[path[-1]])
-    print(df)
     return df

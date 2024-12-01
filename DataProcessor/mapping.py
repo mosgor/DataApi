@@ -15,5 +15,4 @@ def mapping(df, mapping_data):
         for p in path_source[1::]:
             data = data.get(p)
         temp[path_model[-1]] = data
-    print(model)
     return model
