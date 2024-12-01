@@ -6,6 +6,8 @@ comparison = {
 }
 
 def filter(df, filters_data):
+
+    """
     filtered_df = df
     for fil in filters_data:
         if fil["arg"] in df.columns:
@@ -18,3 +20,5 @@ def filter(df, filters_data):
             ]
 
     return filtered_df
+    """
+
