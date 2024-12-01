@@ -2,6 +2,8 @@ package main
 
 import (
 	"ModelOrchestrator/pkg/config"
+	"ModelOrchestrator/pkg/gRPC"
+	"ModelOrchestrator/pkg/logs"
 	"ModelOrchestrator/pkg/mapping"
 	"ModelOrchestrator/pkg/model"
 	"context"
@@ -12,6 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log/slog"
+	"net"
 	"net/http"
 	"os"
 	"time"
@@ -44,6 +47,7 @@ func main() {
 
 	modelRepo := model.NewRepository(pool, client, log)
 	mappingRepo := mapping.NewRepository(client, log)
+	logsRepo := logs.NewRepository(pool, log)
 
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
@@ -59,6 +63,24 @@ func main() {
 	router.Get("/mapping", mapping.NewFindAll(log, mappingRepo))
 	router.Get("/mapping/{mappingId}", mapping.NewFindOne(log, mappingRepo))
 	router.Post("/mapping", mapping.NewCreate(log, mappingRepo))
+
+	router.Get("/logs", logs.NewFindAll(log, logsRepo))
+
+	netClient := &http.Client{Timeout: cfg.Http.Timeout}
+	grpc := gRPC.NewRpcServer(logsRepo, modelRepo, netClient, cfg.Grpc.Timeout, log)
+	lis, err := net.Listen("tcp", cfg.Grpc.Address)
+	if err != nil {
+		log.Error("Unable to listen to " + cfg.Grpc.Address)
+		return
+	}
+	go func() {
+		log.Info("Starting serving gRCP at " + cfg.Grpc.Address)
+		err = grpc.Serve(lis)
+		if err != nil {
+			log.Error("Unable to start gRPC server")
+			return
+		}
+	}()
 
 	srv := &http.Server{
 		Addr:         cfg.Http.Address,
