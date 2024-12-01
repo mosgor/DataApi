@@ -15,16 +15,15 @@ def docker(df):
     
     source_id = df['source_id']
 
-    query = {'source_id': source_id}
-    documents = collection.find(query)
+    for s_id in source_id:
+        query = {'source_id': s_id}
+        documents = collection.find(query)
 
-    data = json.loads(df['data_json'].replace("'", '"'))
+        data = json.loads(df['data_json'].replace("'", '"'))
 
-    for document in documents:
-        data = mapping(data, document['mapping'])
-        data = transform(data, document['transformation'])
-        data = filter(data, document['filters'])
-        print(data)
-        #df['data_json'] = str(data)
-        #print(df)
-        #run_client(df, document['model_id'])
+        for document in documents:
+            data = mapping(data, document['mapping'])
+            data = transform(data, document['transformation'])
+            data = filter(data, document['filters'])
+            df['data_json'] = str(data)
+            run_client(df, document['model_id'])

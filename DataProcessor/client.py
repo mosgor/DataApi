@@ -8,9 +8,9 @@ def client(df, model_id):
     ts = Timestamp()
     ts.ToDatetime(df['arrival_time'])
     yield model_orchestrator_pb2.ProcessedData(
-        source_id=int(df['source_id']),
-        model_id=int(model_id),
-        data_json=str(df['data_json']),
+        source_id=df['source_id'],
+        model_id=model_id,
+        data_json=df['data_json'],
         arrival_time=ts,
     )
 

@@ -12,7 +12,7 @@ def mapping(df, mapping_data):
 
         path_source = m['source_path'].split('/')
         data = df
-        for p in path_source[1::]:
+        for p in path_source:
             data = data.get(p)
         temp[path_model[-1]] = data
     return model

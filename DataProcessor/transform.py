@@ -26,7 +26,7 @@ def transform(df, transformation):
     for trans in transformation:
         path = trans['field_path'].split('/')
         data = df
-        for p in path[1:-1]:
+        for p in path[:-1]:
             data = data.get(p)
         data[path[-1]] = func[trans['func']](data[path[-1]])
     return df
