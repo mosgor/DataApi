@@ -15,18 +15,18 @@ type Config struct {
 }
 
 type GRPCConfig struct {
-	Port    int           `yaml:"port"`
+	Port    string        `yaml:"port"`
 	Timeout time.Duration `yaml:"timeout"`
 }
 
 type HTTPConfig struct {
-	Port    int           `yaml:"port"`
+	Port    string        `yaml:"port"`
 	Timeout time.Duration `yaml:"timeout"`
 }
 
 func MustLoad() *Config {
 
-	path := "config/local.yaml"
+	path := "config/prod.yaml"
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		panic("Path does not exist:" + path)
