@@ -8,7 +8,7 @@ type MongoData struct {
 }
 
 type Field struct {
-	FieldName string `json:"name" bson:"name"`
+	FieldPath string `json:"path" bson:"path"`
 	FieldType string `json:"type" bson:"type"`
 	Parent    string `json:"parent,omitempty" bson:"parent,omitempty"`
 }

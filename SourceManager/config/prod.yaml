@@ -1,8 +1,8 @@
-env: "local"
+env: "prod"
 database_pass: "adm"
 grpc:
-  port: 50051
+  port: ":50051"
   timeout: 10s
 http:
-  port: 8081
+  port: ":8081"
   timeout: 10s
