@@ -17,7 +17,7 @@ type mapping struct {
 type transformation struct {
 	FieldPath string `json:"field_path" bson:"field_path"`
 	Func      string `json:"func" bson:"func"`
-	Msg       string `json:"msg" bson:"msg"`
+	Msg       string `json:"msg,omitempty" bson:"msg,omitempty"`
 }
 
 type filter struct {

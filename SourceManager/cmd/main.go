@@ -27,9 +27,14 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), cfg.HTTP.Timeout)
 	defer cancel()
-	pool, err := pgxpool.New(ctx, fmt.Sprintf("postgresql://admin:%v@postgres:5438/DataApi", cfg.DatabasePass))
+	pool, err := pgxpool.New(ctx, fmt.Sprintf("postgresql://admin:%v@postgres:5432/DataApi", cfg.DatabasePass))
 	if err != nil {
 		log.Error("unable to connect to postgres")
+		return
+	}
+	err = pool.Ping(ctx)
+	if err != nil {
+		log.Error("unable to ping postgres")
 		return
 	}
 
@@ -38,7 +43,7 @@ func main() {
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
-		log.Error("unable to connect to mongo")
+		log.Error("unable to connect to mongo in main")
 		return
 	}
 
@@ -46,7 +51,7 @@ func main() {
 
 	server := http_server.CreateServer(repo)
 
-	addr := fmt.Sprintf("data_processor:%d", cfg.GRPC.Port)
+	addr := fmt.Sprintf("data_processor" + cfg.GRPC.Port)
 
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -61,8 +66,10 @@ func main() {
 	}
 	go grpc_client.GrpcClientConnection(grpcClient, ids, ctx, httpClient, log, *cfg, repo)
 
+	log.Info("Starting listening address")
 	er := server.ListenAndServe()
 	if er != nil {
+		log.Error("Some error with listening")
 		log.Error(er.Error())
 	}
 }

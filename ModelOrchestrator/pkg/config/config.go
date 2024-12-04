@@ -14,12 +14,12 @@ type Config struct {
 }
 
 type HttpConfig struct {
-	Address string        `yaml:"address" env-default:"localhost:8082"`
+	Address string        `yaml:"address" env-default:":8082"`
 	Timeout time.Duration `yaml:"timeout" env-required:"true"`
 }
 
 type GrpcConfig struct {
-	Address string        `yaml:"address" env-default:"localhost:11411"`
+	Address string        `yaml:"address" env-default:":11411"`
 	Timeout time.Duration `yaml:"timeout" env-required:"true"`
 }
 

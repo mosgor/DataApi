@@ -1,7 +1,6 @@
 package http_server
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -33,7 +32,7 @@ func CreateServer(repo repositories.SourceRepository) (server *http.Server) {
 	router.Post("/source", post.ServerPost(log, repo))
 
 	return &http.Server{
-		Addr:         fmt.Sprintf(":%v", cfg.HTTP.Port),
+		Addr:         cfg.HTTP.Port,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 		IdleTimeout:  5 * time.Second,

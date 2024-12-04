@@ -41,7 +41,7 @@ func ServerGetMultiple(log *slog.Logger, repository repositories.SourceRepositor
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cfg := config.MustLoad()
 		log := logger.SetupLogger(cfg.Env)
-
+		log.Info("reached handler")
 		read, err := repository.ReadAll(r.Context())
 
 		if err != nil {

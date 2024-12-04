@@ -17,7 +17,6 @@ type MongoModel struct {
 type field struct {
 	FieldPath string `json:"path" bson:"path"`
 	FieldType string `json:"type" bson:"type"`
-	Parent    string `json:"parent,omitempty" bson:"parent,omitempty"`
 }
 
 type Resp struct {
